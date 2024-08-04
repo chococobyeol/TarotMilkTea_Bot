@@ -14,7 +14,7 @@ const client = new Client({
 });
 
 const genAI = new GoogleGenerativeAI(functions.config().gemini.key);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 const tarotCards = [
   '바보', '마법사', '여사제', '여제', '황제', '교황', '연인', '전차',
