@@ -55,13 +55,8 @@ const greetings = [
   "어서 오세요. 무슨 일이 있으신 것 같네요. 타로로 한 번 봐드릴게요."
 ];
 
-// 서버별, 사용자별 사용된 카드를 추적하기 위한 맵
 const usedCardsByGuildUser = new Map();
-
-// 서버별, 사용자별 대화 컨텍스트를 유지하기 위한 맵
 const userContexts = new Map();
-
-// 최대 저장할 대화 기록 수
 const MAX_CONTEXT_HISTORY = 10;
 
 function getUniqueKey(guildId, userId) {
@@ -118,11 +113,11 @@ client.on('messageCreate', async (message) => {
     const row = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
-          .setCustomId('three_card_spread')
+          .setCustomId(`three_card_spread:${message.author.id}`)
           .setLabel('3장 스프레드')
           .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
-          .setCustomId('single_card')
+          .setCustomId(`single_card:${message.author.id}`)
           .setLabel('단일 카드')
           .setStyle(ButtonStyle.Secondary),
       );
@@ -153,7 +148,13 @@ client.on('messageCreate', async (message) => {
 client.on('interactionCreate', async (interaction) => {
   try {
     if (interaction.isButton()) {
-      if (interaction.customId === 'end_session') {
+      const [action, userId] = interaction.customId.split(':');
+      if (interaction.user.id !== userId) {
+        await interaction.reply({ content: '죄송합니다. 이 버튼은 타로를 요청한 사용자만 사용할 수 있습니다.', ephemeral: true });
+        return;
+      }
+
+      if (action === 'end_session') {
         await interaction.update({
           content: interaction.message.content + "\n\n타로 상담이 종료되었습니다. 감사합니다!",
           components: [],
@@ -162,7 +163,7 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       const modal = new ModalBuilder()
-        .setCustomId(interaction.customId === 'three_card_spread' ? 'tarot_question_three' : 'tarot_question_single')
+        .setCustomId(action === 'three_card_spread' ? `tarot_question_three:${userId}` : `tarot_question_single:${userId}`)
         .setTitle('타로 카드 질문');
 
       const questionInput = new TextInputBuilder()
@@ -177,10 +178,16 @@ client.on('interactionCreate', async (interaction) => {
     } else if (interaction.isModalSubmit()) {
       await interaction.deferReply();
 
+      const [action, userId] = interaction.customId.split(':');
+      if (interaction.user.id !== userId) {
+        await interaction.editReply({ content: '죄송합니다. 이 응답은 타로를 요청한 사용자의 것이 아닙니다.', ephemeral: true });
+        return;
+      }
+
       const question = interaction.fields.getTextInputValue('tarot_question');
       let selectedCards;
       
-      if (interaction.customId === 'tarot_question_three') {
+      if (action === 'tarot_question_three') {
         selectedCards = getRandomCards(3, interaction.guildId, interaction.user.id);
       } else {
         selectedCards = getRandomCards(1, interaction.guildId, interaction.user.id);
@@ -201,7 +208,6 @@ client.on('interactionCreate', async (interaction) => {
               .setTitle(card)
               .setImage(`attachment://${fileName}`);
             
-            // 3장 스프레드일 경우 이미지 크기 조정
             if (selectedCards.length === 3) {
               embed.setImage(`attachment://${fileName}?width=200&height=350`);
             }
@@ -234,11 +240,11 @@ client.on('interactionCreate', async (interaction) => {
       const row = new ActionRowBuilder()
         .addComponents(
           new ButtonBuilder()
-            .setCustomId('follow_up_question')
+            .setCustomId(`follow_up_question:${interaction.user.id}`)
             .setLabel('추가 질문하기')
             .setStyle(ButtonStyle.Primary),
           new ButtonBuilder()
-            .setCustomId('end_session')
+            .setCustomId(`end_session:${interaction.user.id}`)
             .setLabel('상담 종료하기')
             .setStyle(ButtonStyle.Secondary)
         );
@@ -256,9 +262,15 @@ client.on('interactionCreate', async (interaction) => {
           components: [row],
         });
       }
-    } else if (interaction.isButton() && interaction.customId === 'follow_up_question') {
+    } else if (interaction.isButton() && interaction.customId.startsWith('follow_up_question:')) {
+      const [action, userId] = interaction.customId.split(':');
+      if (interaction.user.id !== userId) {
+        await interaction.reply({ content: '죄송합니다. 이 버튼은 타로를 요청한 사용자만 사용할 수 있습니다.', ephemeral: true });
+        return;
+      }
+
       const modal = new ModalBuilder()
-        .setCustomId('follow_up_modal')
+        .setCustomId(`follow_up_modal:${userId}`)
         .setTitle('추가 질문');
 
       const questionInput = new TextInputBuilder()
@@ -270,8 +282,14 @@ client.on('interactionCreate', async (interaction) => {
       modal.addComponents(actionRow);
 
       await interaction.showModal(modal);
-    } else if (interaction.isModalSubmit() && interaction.customId === 'follow_up_modal') {
+    } else if (interaction.isModalSubmit() && interaction.customId.startsWith('follow_up_modal:')) {
       await interaction.deferReply();
+
+      const [action, userId] = interaction.customId.split(':');
+      if (interaction.user.id !== userId) {
+        await interaction.editReply({ content: '죄송합니다. 이 응답은 타로를 요청한 사용자의 것이 아닙니다.', ephemeral: true });
+        return;
+      }
 
       const followUpQuestion = interaction.fields.getTextInputValue('follow_up_question_input');
 
@@ -309,7 +327,6 @@ client.on('interactionCreate', async (interaction) => {
               .setTitle(card)
               .setImage(`attachment://${fileName}`);
             
-            // 3장 스프레드일 경우 이미지 크기 조정
             if (selectedCards.length === 3) {
               embed.setImage(`attachment://${fileName}?width=200&height=350`);
             }
@@ -333,11 +350,11 @@ client.on('interactionCreate', async (interaction) => {
       const row = new ActionRowBuilder()
         .addComponents(
           new ButtonBuilder()
-            .setCustomId('follow_up_question')
+            .setCustomId(`follow_up_question:${interaction.user.id}`)
             .setLabel('추가 질문하기')
             .setStyle(ButtonStyle.Primary),
           new ButtonBuilder()
-            .setCustomId('end_session')
+            .setCustomId(`end_session:${interaction.user.id}`)
             .setLabel('상담 종료하기')
             .setStyle(ButtonStyle.Secondary)
         );
