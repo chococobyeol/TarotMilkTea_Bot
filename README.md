@@ -52,11 +52,24 @@
 ## 프로젝트 구조
 
 ```
-.
-├── index.js                # 메인 애플리케이션 파일
-├── package.json            # 프로젝트 의존성 정보
-├── tarot_images/           # 타로 카드 이미지 폴더
-└── README.md               # 이 파일
+프로젝트 루트/
+│
+├── functions/
+│   ├── tarot_images/       # 타로 카드 이미지 폴더
+│   ├── .gitignore
+│   ├── index.js            # 메인 애플리케이션 파일
+│   ├── package-lock.json
+│   └── package.json        # 프로젝트 의존성 정보
+│
+├── venv/
+│
+├── .env
+├── .firebaserc
+├── .gitignore
+├── firebase.json
+├── LICENSE
+├── README.md
+└── requirements.txt
 ```
 
 ## 주요 알고리즘 및 기능
@@ -70,6 +83,7 @@
 4. **이미지 처리**: 선택된 카드에 해당하는 이미지를 `tarot_images` 폴더에서 불러와 표시합니다.
 
 5. **인터랙션 처리**: 버튼 클릭, 모달 제출 등 다양한 사용자 인터랙션을 처리합니다.
+
 
 ## 기여하기
 
