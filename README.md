@@ -61,10 +61,6 @@
 │   ├── package-lock.json
 │   └── package.json        # 프로젝트 의존성 정보
 │
-├── venv/
-│
-├── .env
-├── .firebaserc
 ├── .gitignore
 ├── firebase.json
 ├── LICENSE
@@ -84,6 +80,26 @@
 
 5. **인터랙션 처리**: 버튼 클릭, 모달 제출 등 다양한 사용자 인터랙션을 처리합니다.
 
+## 개발 환경 설정
+
+1. 저장소를 클론합니다:
+   ```
+   git clone https://github.com/chococobyeol/TarotMilkTea_Bot.git
+   cd TarotMilkTea_Bot
+   ```
+
+2. `functions` 디렉토리로 이동하여 의존성을 설치합니다:
+   ```
+   cd functions
+   npm install
+   ```
+
+3. 필요한 환경 변수를 설정합니다.
+
+4. 로컬에서 봇을 실행합니다:
+   ```
+   npm start
+   ```
 
 ## 기여하기
 
