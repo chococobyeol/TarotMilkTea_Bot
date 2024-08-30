@@ -17,12 +17,26 @@ const genAI = new GoogleGenerativeAI(functions.config().gemini.key);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 const tarotCards = [
+  // 메이저 아르카나
   '바보', '마법사', '여사제', '여제', '황제', '교황', '연인', '전차',
   '힘', '은둔자', '운명의 수레바퀴', '정의', '매달린 사람', '죽음', '절제',
-  '악마', '탑', '별', '달', '태양', '심판', '세계'
+  '악마', '탑', '별', '달', '태양', '심판', '세계',
+  // 컵 스위트
+  '컵의 1', '컵의 2', '컵의 3', '컵의 4', '컵의 5', '컵의 6', '컵의 7', '컵의 8', '컵의 9', '컵의 10',
+  '컵의 시종', '컵의 기사', '컵의 여왕', '컵의 왕',
+  // 펜타클 스위트
+  '펜타클의 1', '펜타클의 2', '펜타클의 3', '펜타클의 4', '펜타클의 5', '펜타클의 6', '펜타클의 7', '펜타클의 8', '펜타클의 9', '펜타클의 10',
+  '펜타클의 시종', '펜타클의 기사', '펜타클의 여왕', '펜타클의 왕',
+  // 검 스위트
+  '검의 1', '검의 2', '검의 3', '검의 4', '검의 5', '검의 6', '검의 7', '검의 8', '검의 9', '검의 10',
+  '검의 시종', '검의 기사', '검의 여왕', '검의 왕',
+  // 지팡이 스위트
+  '지팡이의 1', '지팡이의 2', '지팡이의 3', '지팡이의 4', '지팡이의 5', '지팡이의 6', '지팡이의 7', '지팡이의 8', '지팡이의 9', '지팡이의 10',
+  '지팡이의 시종', '지팡이의 기사', '지팡이의 여왕', '지팡이의 왕'
 ];
 
 const tarotCardFiles = {
+  // 메이저 아르카나
   '바보': 'tarot_fool.png',
   '마법사': 'tarot_magician.png',
   '여사제': 'tarot_high_priestess.png',
@@ -44,7 +58,67 @@ const tarotCardFiles = {
   '달': 'tarot_moon.png',
   '태양': 'tarot_sun.png',
   '심판': 'tarot_judgement.png',
-  '세계': 'tarot_world.png'
+  '세계': 'tarot_world.png',
+  // 컵 스위트
+  '컵의 1': 'tarot_cups_1.png',
+  '컵의 2': 'tarot_cups_2.png',
+  '컵의 3': 'tarot_cups_3.png',
+  '컵의 4': 'tarot_cups_4.png',
+  '컵의 5': 'tarot_cups_5.png',
+  '컵의 6': 'tarot_cups_6.png',
+  '컵의 7': 'tarot_cups_7.png',
+  '컵의 8': 'tarot_cups_8.png',
+  '컵의 9': 'tarot_cups_9.png',
+  '컵의 10': 'tarot_cups_10.png',
+  '컵의 시종': 'tarot_cups_page.png',
+  '컵의 기사': 'tarot_cups_knight.png',
+  '컵의 여왕': 'tarot_cups_queen.png',
+  '컵의 왕': 'tarot_cups_king.png',
+  // 펜타클 스위트
+  '펜타클의 1': 'tarot_pentacles_1.png',
+  '펜타클의 2': 'tarot_pentacles_2.png',
+  '펜타클의 3': 'tarot_pentacles_3.png',
+  '펜타클의 4': 'tarot_pentacles_4.png',
+  '펜타클의 5': 'tarot_pentacles_5.png',
+  '펜타클의 6': 'tarot_pentacles_6.png',
+  '펜타클의 7': 'tarot_pentacles_7.png',
+  '펜타클의 8': 'tarot_pentacles_8.png',
+  '펜타클의 9': 'tarot_pentacles_9.png',
+  '펜타클의 10': 'tarot_pentacles_10.png',
+  '펜타클의 시종': 'tarot_pentacles_page.png',
+  '펜타클의 기사': 'tarot_pentacles_knight.png',
+  '펜타클의 여왕': 'tarot_pentacles_queen.png',
+  '펜타클의 왕': 'tarot_pentacles_king.png',
+  // 검 스위트
+  '검의 1': 'tarot_swords_1.png',
+  '검의 2': 'tarot_swords_2.png',
+  '검의 3': 'tarot_swords_3.png',
+  '검의 4': 'tarot_swords_4.png',
+  '검의 5': 'tarot_swords_5.png',
+  '검의 6': 'tarot_swords_6.png',
+  '검의 7': 'tarot_swords_7.png',
+  '검의 8': 'tarot_swords_8.png',
+  '검의 9': 'tarot_swords_9.png',
+  '검의 10': 'tarot_swords_10.png',
+  '검의 시종': 'tarot_swords_page.png',
+  '검의 기사': 'tarot_swords_knight.png',
+  '검의 여왕': 'tarot_swords_queen.png',
+  '검의 왕': 'tarot_swords_king.png',
+  // 지팡이 스위트
+  '지팡이의 1': 'tarot_wands_1.png',
+  '지팡이의 2': 'tarot_wands_2.png',
+  '지팡이의 3': 'tarot_wands_3.png',
+  '지팡이의 4': 'tarot_wands_4.png',
+  '지팡이의 5': 'tarot_wands_5.png',
+  '지팡이의 6': 'tarot_wands_6.png',
+  '지팡이의 7': 'tarot_wands_7.png',
+  '지팡이의 8': 'tarot_wands_8.png',
+  '지팡이의 9': 'tarot_wands_9.png',
+  '지팡이의 10': 'tarot_wands_10.png',
+  '지팡이의 시종': 'tarot_wands_page.png',
+  '지팡이의 기사': 'tarot_wands_knight.png',
+  '지팡이의 여왕': 'tarot_wands_queen.png',
+  '지팡이의 왕': 'tarot_wands_king.png'
 };
 
 const greetings = [
@@ -77,9 +151,12 @@ function getRandomCards(count, guildId, userId) {
   }
   
   const shuffled = availableCards.sort(() => 0.5 - Math.random());
-  const selectedCards = shuffled.slice(0, count);
+  const selectedCards = shuffled.slice(0, count).map(card => {
+    const isReversed = Math.random() < 0.5;
+    return isReversed ? `${card} (역방향)` : card;
+  });
   
-  selectedCards.forEach(card => usedCards.add(card));
+  selectedCards.forEach(card => usedCards.add(card.split(' (')[0]));
   
   return selectedCards;
 }
@@ -197,9 +274,10 @@ client.on('interactionCreate', async (interaction) => {
       const files = [];
 
       for (const card of selectedCards) {
-        const fileName = tarotCardFiles[card];
+        const [cardName, orientation] = card.split(' (');
+        const fileName = tarotCardFiles[cardName];
         if (fileName) {
-          const filePath = path.join(__dirname, 'tarot_images', fileName);
+          const filePath = path.join(__dirname, 'tarot_images', orientation === '역방향)' ? fileName.replace('.png', '_r.png') : fileName);
           if (fs.existsSync(filePath)) {
             const attachment = new AttachmentBuilder(filePath, { name: fileName });
             files.push(attachment);
@@ -262,116 +340,6 @@ client.on('interactionCreate', async (interaction) => {
           components: [row],
         });
       }
-    } else if (interaction.isButton() && interaction.customId.startsWith('follow_up_question:')) {
-      const [action, userId] = interaction.customId.split(':');
-      if (interaction.user.id !== userId) {
-        await interaction.reply({ content: '죄송합니다. 이 버튼은 타로를 요청한 사용자만 사용할 수 있습니다.', ephemeral: true });
-        return;
-      }
-
-      const modal = new ModalBuilder()
-        .setCustomId(`follow_up_modal:${userId}`)
-        .setTitle('추가 질문');
-
-      const questionInput = new TextInputBuilder()
-        .setCustomId('follow_up_question_input')
-        .setLabel('추가로 어떤 점이 궁금하신가요?')
-        .setStyle(TextInputStyle.Paragraph);
-
-      const actionRow = new ActionRowBuilder().addComponents(questionInput);
-      modal.addComponents(actionRow);
-
-      await interaction.showModal(modal);
-    } else if (interaction.isModalSubmit() && interaction.customId.startsWith('follow_up_modal:')) {
-      await interaction.deferReply();
-
-      const [action, userId] = interaction.customId.split(':');
-      if (interaction.user.id !== userId) {
-        await interaction.editReply({ content: '죄송합니다. 이 응답은 타로를 요청한 사용자의 것이 아닙니다.', ephemeral: true });
-        return;
-      }
-
-      const followUpQuestion = interaction.fields.getTextInputValue('follow_up_question_input');
-
-      const key = getUniqueKey(interaction.guildId, interaction.user.id);
-      const userContext = userContexts.get(key) || [];
-
-      const chat = await model.startChat();
-      for (const context of userContext) {
-        await chat.sendMessage(context);
-      }
-
-      const spreadDecision = await chat.sendMessage(
-        `다음 추가 질문에 대해 3장 스프레드와 단일 카드 중 어느 것이 더 적합한지 판단해주세요. 판단 이유도 함께 제시해주세요: "${followUpQuestion}"`
-      );
-
-      let selectedCards;
-      if (spreadDecision.response.text().toLowerCase().includes('3장 스프레드')) {
-        selectedCards = getRandomCards(3, interaction.guildId, interaction.user.id);
-      } else {
-        selectedCards = getRandomCards(1, interaction.guildId, interaction.user.id);
-      }
-
-      const embeds = [];
-      const files = [];
-
-      for (const card of selectedCards) {
-        const fileName = tarotCardFiles[card];
-        if (fileName) {
-          const filePath = path.join(__dirname, 'tarot_images', fileName);
-          if (fs.existsSync(filePath)) {
-            const attachment = new AttachmentBuilder(filePath, { name: fileName });
-            files.push(attachment);
-
-            const embed = new EmbedBuilder()
-              .setTitle(card)
-              .setImage(`attachment://${fileName}`);
-            
-            if (selectedCards.length === 3) {
-              embed.setImage(`attachment://${fileName}?width=200&height=350`);
-            }
-            
-            embeds.push(embed);
-          } else {
-            console.error(`Image file not found: ${filePath}`);
-          }
-        }
-      }
-
-      const interpretation = await chat.sendMessage(
-        `다음은 추가 타로 카드 점괘입니다. 질문: "${followUpQuestion}", 뽑은 카드: ${selectedCards.join(', ')}. ` +
-        `이 카드들이 질문에 대해 어떤 의미를 가지는지 따뜻하고 공손한 말투로 해석해주세요. 각 카드의 의미와 전체적인 해석을 제공해주세요.`
-      );
-
-      updateUserContext(interaction.guildId, interaction.user.id, `추가 질문: ${followUpQuestion}\n카드: ${selectedCards.join(', ')}\n해석: ${interpretation.response.text()}`);
-
-      let responseText = `"${followUpQuestion}"이라고 추가로 물어보셨군요.\n\n**뽑은 카드:**\n${selectedCards.join('\n')}\n\n**해석:**\n${interpretation.response.text()}\n\n타로 상담이 도움이 되셨다면, 아래 링크를 통해 후원해 주시면 감사하겠습니다. 여러분의 후원은 더 나은 서비스를 제공하는 데 큰 힘이 됩니다.\n\n[☕ 타로밀크티에게 커피 한 잔 사주기](https://www.buymeacoffee.com/chococo)`;
-
-      const row = new ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId(`follow_up_question:${interaction.user.id}`)
-            .setLabel('추가 질문하기')
-            .setStyle(ButtonStyle.Primary),
-          new ButtonBuilder()
-            .setCustomId(`end_session:${interaction.user.id}`)
-            .setLabel('상담 종료하기')
-            .setStyle(ButtonStyle.Secondary)
-        );
-
-      if (files.length > 0) {
-        await interaction.editReply({
-          content: responseText,
-          embeds: embeds,
-          files: files,
-          components: [row],
-        });
-      } else {
-        await interaction.editReply({
-          content: responseText + "\n\n(이미지를 표시하는 데 문제가 발생했습니다.)",
-          components: [row],
-        });
-      }
     }
   } catch (error) {
     console.error('Error in interaction:', error);
@@ -387,7 +355,7 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-exports.discordBot = functions.runWith({
+exports.discordBot = functions.region('us-east1').runWith({
   timeoutSeconds: 540,
   memory: '2GB'
 }).https.onRequest(async (request, response) => {
@@ -401,7 +369,7 @@ exports.discordBot = functions.runWith({
   }
 });
 
-exports.keepAlive = functions.pubsub.schedule('every 5 minutes').onRun(async (context) => {
+exports.keepAlive = functions.region('us-east1').pubsub.schedule('every 5 minutes').onRun(async (context) => {
   if (!client.isReady()) {
     await client.login(functions.config().discord.token);
     console.log('Discord bot initialized from scheduled function');
